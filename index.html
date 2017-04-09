@@ -1,0 +1,142 @@
+
+</!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<div id="container">
+	<canvas id="myCanvas" width="300" height="300">
+	</canvas>
+<br>
+ 
+	<button id="reset">Reset</button>
+<br>
+
+<div id="toolbar">
+	<img class="symbol" data-id="" width=40 src="images/block.png"/>
+	<img class="symbol" data-id="block" width=40 src="images/block.png"/>
+	<img class="symbol" data-id="beehive" width=40 src="images/beehive.png"/>
+	<img class="symbol" data-id="boat" width=40 src="images/boat.png"/>
+	<img class="symbol" data-id="loaf" width=40 src="images/loaf.png"/>
+	<img class="symbol" data-id="tub" width=40 src="images/tub.png"/>
+</div>
+</div>
+
+	<style>
+body{
+margin:0;
+padding:0;}
+		canvas {
+cursor: crosshair;
+			  margin-left:auto;
+margin-right:auto;
+background-color: white;
+border:1px solid #d3d3d3;
+		}
+#container {
+padding:20px;
+background-color: #ddd;
+text-align: center;
+}
+	</style>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+var symbol = null;
+var socket = io('http://localhost:3000');
+var x;
+var y;
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
+      color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+var color = getRandomColor();
+
+function getXY(e) {
+	if (e.pageX || e.pageY) { 
+	  x = e.pageX;
+	  y = e.pageY;
+ 		x = x - $("canvas").offset().left;
+ 		y = y - $("canvas").offset().top;
+		x = Math.round(x);
+		y = Math.round(y);
+	}
+}
+
+$("canvas").click(function(e){
+	getXY(e);
+console.log(color);
+	socket.emit("click",{ 
+		x:x, 
+		y:y,
+		symbol:symbol,
+		color:color,
+	});
+});
+
+$("canvas").mousemove(function(e){
+  
+});
+
+$(".symbol").click(function(e){
+	symbol = $(this).attr("data-id");
+})
+
+$("#reset").click(function(e){
+	socket.emit("reset");
+});
+
+socket.on('connect', function(data){
+	console.log("connected with server");
+});
+socket.on('disconnect', function(data){	 
+	console.log("disconnected with server");
+});
+
+socket.on('timer', function(data){	 
+	theGrid = data.data;
+	drawGrid()
+});
+
+
+gridSize = 300;
+var theGrid = [];
+var gridHeight = gridSize;
+var gridWidth = gridSize;
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+var theGrid = [];
+
+function drawGrid() { 
+
+	ctx.clearRect(0, 0, 500, 500);
+
+	for (var j = 1; j < gridHeight; j++) {  
+		for (var k = 1; k < gridWidth; k++) {  
+			if (theGrid[j][k] === 1) {
+
+				ctx.fillStyle = "#FF0000";
+
+				ctx.fillRect(j, k, 1, 1);
+			}
+
+		}
+
+	}
+
+}
+  
+</script>
+
+</body>
+</html>
