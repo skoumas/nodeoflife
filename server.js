@@ -28,7 +28,8 @@ setInterval(function() {
   updateGrid();
  	
   io.emit('timer', { 
-		data:theGrid
+		data:theGrid,
+		color:colorGrid
 	});
 
 }, 20);
@@ -44,9 +45,52 @@ function createArray(rows) {
 	return arr;
 
 }
+
+function averageColors( colorArray ){
+    var red = 0, green = 0, blue = 0;
+
+    for ( var i = 0; i < colorArray.length; i++ ){
+        red += hexToR( "" + colorArray[ i ] + "" );
+        green += hexToG( "" + colorArray[ i ] + "" );
+        blue += hexToB( "" + colorArray[ i ] + "" );
+    }
+
+    //Average RGB
+    red = (red/colorArray.length);
+    green = (green/colorArray.length);
+    blue = (blue/colorArray.length);
+ 
+    return rgbToHex(red,green,blue);
+}
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+//get the red of RGB from a hex value
+function hexToR(h) {return parseInt((cutHex( h )).substring( 0, 2 ), 16 )}
+
+//get the green of RGB from a hex value
+function hexToG(h) {return parseInt((cutHex( h )).substring( 2, 4 ), 16 )}
+
+//get the blue of RGB from a hex value
+function hexToB(h) {return parseInt((cutHex( h )).substring( 4, 6 ), 16 )}
+
+//cut the hex into pieces
+function cutHex(h) {if(h.charAt(1) == "x"){return h.substring( 2, 8 );} else {return h.substring(1,7);}}
+ 
+ 
+
+
 gridSize = 300;
 var theGrid = createArray(gridSize);
 var mirrorGrid = createArray(gridSize);
+var colorGrid = createArray(gridSize);
 var gridHeight = gridSize;
 var gridWidth = gridSize;
 
@@ -75,7 +119,17 @@ if (theGrid[j][k] === 0) {
 
 	switch (totalCells) {
 		case 3:
+			var colorArray = [];
 			//if cell is dead and has 3 neighbours, switch it on
+			colorArray.push (colorGrid[j][k]);
+			colorArray.push (colorGrid[j+1][k+1]);
+			colorArray.push (colorGrid[j][k+1]);
+			colorArray.push (colorGrid[j+1][k]);
+			colorArray.push (colorGrid[j-1][k-1]);
+			colorArray.push (colorGrid[j][k-1]);
+			colorArray.push (colorGrid[j-1][k]);
+			colorArray.push (colorGrid[j][k]);
+			colorGrid[j][k] = averageColors(colorArray);
 			mirrorGrid[j][k] = 1; 
 			break;
 
@@ -126,7 +180,7 @@ case 1:
 }
 
 }
-
+ 
 	//copy mirrorGrid to theGrid
 	for (var j = 0; j < gridHeight; j++) {  
 		for (var k = 0; k < gridWidth; k++) { 
@@ -138,11 +192,13 @@ case 1:
 
 function add(x,y,symbol,color) {
 
-console.log(x,y,symbol,color);
+ 
  if ((x<gridSize && y<gridSize) && (x!=null) && (y!=null)) {
 } else {
 	return;
 }
+	colorGrid[x][y] = "#000000";
+
 	if (symbol==null) {
 		theGrid[x][y] = 1;
 	} else if (symbol=="block"){
@@ -150,9 +206,59 @@ console.log(x,y,symbol,color);
 		theGrid[x+1][y] = 1;
 		theGrid[x][y+1] = 1;
 		theGrid[x+1][y+1] = 1;
-  }
+		colorGrid[x][y] = color;
+		colorGrid[x][y+1] = color;
+		colorGrid[x+1][y] = color;
+		colorGrid[x+1][y+1] = color;
+  } else if (symbol=="boat") {
+		theGrid[x-1][y] = 1;
+		theGrid[x-1][y-1] = 1;
+		theGrid[x][y-1] = 1;
+		theGrid[x][y] = 1;
+		theGrid[x+1][y] = 1;
+		theGrid[x][y+1] = 1;
+ 		colorGrid[x-1][y] = color;
+		colorGrid[x-1][y-1] = color;
+		colorGrid[x][y-1] = color;
+		colorGrid[x][y] = color;
+		colorGrid[x+1][y] = color;
+		colorGrid[x][y+1] = color;
 
+	}	else if (symbol=="blinker") {
+		theGrid[x-1][y] = 1;
+		theGrid[x+1][y] = 1;
+		theGrid[x][y] = 1; 
 
+ 		colorGrid[x-1][y] = color;
+		colorGrid[x+1][y] = color;
+		colorGrid[x][y] = color;
+ 
+}	else if (symbol=="glider") {
+		theGrid[x][y-1] = 1;
+		theGrid[x+1][y] = 1;
+		theGrid[x][y+1] = 1; 
+		theGrid[x-1][y+1] = 1; 
+		theGrid[x+1][y+1] = 1; 
+		 
+ 		
+		colorGrid[x][y-1] = color;
+		colorGrid[x+1][y] = color;
+		colorGrid[x][y+1] = color; 
+		colorGrid[x-1][y+1] = color; 
+		colorGrid[x+1][y+1] = color; 
+ 
+
+}	else if (symbol=="tub") {
+		theGrid[x][y-1] = 1;
+		theGrid[x+1][y] = 1;
+		theGrid[x][y+1] = 1; 
+		theGrid[x-1][y] = 1; 
+ 
+		colorGrid[x][y-1] = color;
+		colorGrid[x+1][y] = color;
+		colorGrid[x][y+1] = color; 
+		colorGrid[x-1][y] = color; 
+	}
 
 }
  
@@ -166,10 +272,10 @@ function fillRandom() {
 	for (var j = 0; j < gridHeight; j++) {  
 		for (var k = 0; k < gridWidth; k++) {  
 			 
-			 var rawRandom = Math.random();  
-			 var improvedNum = (rawRandom * 2);  
-			 var randomBinary = Math.floor(improvedNum);
-
+			var rawRandom = Math.random();  
+			var improvedNum = (rawRandom * 2);  
+			var randomBinary = Math.floor(improvedNum);
+			colorGrid[j][k] = "#ffffff";
 			if (randomBinary === 1) {
 				theGrid[j][k] = 0;
 			} else {
@@ -178,7 +284,7 @@ function fillRandom() {
 
 		}
 	}
-
+ 
 }
 
 fillRandom();
