@@ -28,7 +28,7 @@ setInterval(function() {
 		color:core.colorGrid
 	});
 
-}, 1000);
+}, 10);
 
-core.clear();
+core.fillRandom();
 server.listen(3000);

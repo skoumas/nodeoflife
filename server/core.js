@@ -65,8 +65,7 @@ function updateGrid() {
 
 				switch (totalCells) {
 					case 3:
-							// Question 4
-						 
+						// Question 4 
 						var colorArray = [];
 						colorArray.push (colorGrid[j][k]);
 						colorArray.push (colorGrid[j+1][k+1]);
@@ -76,8 +75,7 @@ function updateGrid() {
 						colorArray.push (colorGrid[j][k-1]);
 						colorArray.push (colorGrid[j-1][k]);
 						colorArray.push (colorGrid[j][k]);
-						colorGrid[j][k] = averageColors(colorArray);
-						 
+						colorGrid[j][k] = averageColors(colorArray); 
 						mirrorGrid[j][k] = 1; 
 						break;
 
@@ -92,9 +90,14 @@ function updateGrid() {
 				case 1:
 					mirrorGrid[j][k] = 0;  
 					break;
+				case 2:
 				case 3:
 					mirrorGrid[j][k] = 1;  
 					break;
+				case 4:
+				case 5:
+				case 6:
+				case 7:
 				case 8:
 					mirrorGrid[j][k] = 0;  
 					break;

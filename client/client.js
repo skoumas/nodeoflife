@@ -7,7 +7,7 @@ var gridHeight = gridSize;
 var gridWidth = gridSize;
 var theGrid = [];
 var colorGrid = [];
-
+var symbol = "block";
 var socket = io('http://localhost:3000');
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
@@ -103,14 +103,12 @@ socket.on('timer', function(data){
 });
 // END SOCKET CONTROL
 
-
 function drawGrid() { 
 	ctx.clearRect(0, 0, 500, 500);
 	for (var j = 1; j < gridHeight; j++) {  
 		for (var k = 1; k < gridWidth; k++) {  
 			if (theGrid[j][k] === 1) {
 				ctx.fillStyle = colorGrid[j][k];
-				ctx.fillStyle = "red";
 				ctx.fillRect(j, k, 1, 1);
 			}
 
