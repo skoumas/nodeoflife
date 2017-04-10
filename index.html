@@ -1,212 +1,56 @@
-
-</!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Node Of Life</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="client/client.css"/>
 </head>
+
 <body>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-<div id="container">
-<div class="row">
+	<div id="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div id="toolbar">
+					<img class="symbol" data-id="" width=40 src="images/mouse-cursor-icon.jpg"/>
+					<img class="symbol selected-symbol" data-id="block" width=40 src="images/block.png"/>
+					<img class="symbol" data-id="boat" width=40 src="images/boat.png"/>
+					<img class="symbol" data-id="tub" width=40 src="images/tub.png"/>
+					<img class="symbol" data-id="glider" width=40 src="images/glider.gif"/>
+					<img class="symbol" data-id="blinker" width=40 src="images/blinker.gif"/>
 
-	<div class="col-lg-6">
-		<canvas id="myCanvas" width="300" height="300"></canvas>
+					Your randomly selected color is <span id="my_color" style="display:inline-block;width:15px;height:15px"></span>
+				</div>
+			</div>
+			
+			<div class="col-lg-3">
+				<div id="info">
+					<button class="btn btn-primary" id="random">Random</button>
+					<button class="btn btn-primary" id="clear">Clear</button>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<canvas id="myCanvas" width="300" height="300"></canvas>
+			</div>
+
+			<div class="col-lg-3">
+
+				
+			
+				<div id="terminal">
+					<div id="terminal_inner"></div>
+				</div>
+
+				
+
+				
+
+			</div>
+		</div>
 	</div>
 
-
-	<div class="col-lg-6">
-
-	
-		<div id="info">
-		Your color is <span id="my_color" style="display:inline-block;width:15px;height:15px"></span>
-		
-		</div>
-		
-
-			<div id="terminal">
-			<div id="terminal_inner"></div>
-		</div>
-
-<div id="toolbar">
-			<img class="symbol" data-id="" width=40 src="images/mouse-cursor-icon.jpg"/>
-			<img class="symbol selected-symbol" data-id="block" width=40 src="images/block.png"/>
- 
-			<img class="symbol" data-id="boat" width=40 src="images/boat.png"/>
-	 
-			<img class="symbol" data-id="tub" width=40 src="images/tub.png"/>
-			<img class="symbol" data-id="glider" width=40 src="images/glider.gif"/>
-			<img class="symbol" data-id="blinker" width=40 src="images/blinker.gif"/>
-		</div>
-
-<button class="btn btn-primary" id="reset">Reset</button>
-
-	</div>
-
-</div>
-
- 
-</div>
-
-<style>
-body{
-	margin:0;
-	padding:0;
-background-color: #ddd;
-}
-
-canvas {
-	cursor: crosshair;
-	width:600px;
-	height:600px;
-	margin-left:auto;
-	margin-right:auto;
-	background-color: white;
-	border:1px solid #d3d3d3;
-}
-
-#container {
-	padding:40px;
-}
-
-#info {
-	padding:20px;
-	background-color: #d3d3d3;
-}
-
-#terminal_inner {
-	height:400px;
-	font-family:courier;
-	background-color: #333;
-	color:#65FF00;
-	text-align: left;
-	padding:10px;
-}
-.symbol {
-	cursor: pointer;
-	border:3px solid transparent;
-}
-
-.selected-symbol {
-	border:3px solid red;
-}
-
-</style>
-
-
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-var symbol = null;
-var socket = io('http://localhost:3000');
-var x;
-var y;
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++ ) {
-		color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
-var color = getRandomColor();
-var colorGrid = [];
-
-$("#my_color").css("background-color",color);
-wt("Welcome. Your color is: " + color);
-function wt(message){ 
-	$("#terminal_inner").html( $("#terminal_inner").html() + "<br>$ " + message);
-}
-function getXY(e) {
-	if (e.pageX || e.pageY) { 
-	  x = e.pageX;
-	  y = e.pageY;
- 		x = x - $("canvas").offset().left;
- 		y = y - $("canvas").offset().top;
-		x = x /2;
-		y = y /2;
-		x = Math.round(x);
-		y = Math.round(y);
-	
-	}
-}
-
-$("canvas").click(function(e){
-	getXY(e);
- 
-	socket.emit("click",{ 
-		x:x, 
-		y:y,
-		symbol:symbol,
-		color:color,
-	});
-});
-
-$("canvas").mousemove(function(e){
-	if(e.which == 1){
-			getXY(e);
-	    socket.emit("click",{ 
-			x:x, 
-			y:y,
-			symbol:symbol,
-			color:color,
-		}); 
-  }
-});
-
-$(".symbol").click(function(e){
-	$(".symbol").removeClass("selected-symbol");
-	symbol = $(this).attr("data-id");
-	wt("Selected '" + symbol + "'");
-	$(this).addClass("selected-symbol");
-})
-
-$("#reset").click(function(e){
-	socket.emit("reset");
-});
-
-socket.on('connect', function(data){
-	wt("Connected with server");
-});
-
-socket.on('disconnect', function(data){	 
-	wt("Disconnected from server");
-});
-
-socket.on('timer', function(data){	 
-	theGrid = data.data;
-	colorGrid = data.color;
-	drawGrid()
-});
-
-gridSize = 300;
-var theGrid = [];
-var gridHeight = gridSize;
-var gridWidth = gridSize;
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-var theGrid = [];
-var colorGrid = [];
-
-function drawGrid() { 
-	 
-	ctx.clearRect(0, 0, 500, 500);
-
-	for (var j = 1; j < gridHeight; j++) {  
-		for (var k = 1; k < gridWidth; k++) {  
-			if (theGrid[j][k] === 1) {
-				ctx.fillStyle = colorGrid[j][k];
-				ctx.fillRect(j, k, 1, 1);
-			}
-
-		}
-
-	}
-
-}
-  
-</script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+	<script src="client/client.js"></script>
 
 </body>
 </html>
