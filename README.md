@@ -4,7 +4,7 @@
 ### Description
 NodeOfLife is a nodejs application that utiliases the Game of Life algorithm implemented in nodejs and broadcasted using socket.io
 
-### How to run
+### How to run1
 1) Load terminal
 2) node server.js
 3) Open index.html
