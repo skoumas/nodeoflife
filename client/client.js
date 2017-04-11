@@ -8,6 +8,8 @@ var gridWidth = gridSize;
 var theGrid = [];
 var colorGrid = [];
 var symbol = "block";
+
+
 if (typeof(io)=="undefined") {
 	wt("Can't connect to server. Please start node server.js");
 } else {
@@ -114,8 +116,6 @@ function drawGrid() {
 				ctx.fillStyle = "red";
 				ctx.fillRect(j, k, 1, 1);
 			}
-
 		}
-
 	}
 }

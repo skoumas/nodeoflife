@@ -5,7 +5,7 @@ var gridWidth = gridSize;
 var theGrid = createArray(gridSize);
 var mirrorGrid = createArray(gridSize);
 var colorGrid = createArray(gridSize);
-
+var shapes = require('./shapes.js');
 function createArray(rows) {  
 	var arr = [];
 	for (var i = 0; i < rows; i++) {
@@ -128,56 +128,64 @@ function add(x,y,symbol,color) {
 
 	if (symbol==null) {
 		theGrid[x][y] = 1;
-	} else if (symbol=="block"){
-		theGrid[x][y] = 1;
-		theGrid[x+1][y] = 1;
-		theGrid[x][y+1] = 1;
-		theGrid[x+1][y+1] = 1;
-		colorGrid[x][y] = color;
-		colorGrid[x][y+1] = color;
-		colorGrid[x+1][y] = color;
-		colorGrid[x+1][y+1] = color;
-  } else if (symbol=="boat") {
-		theGrid[x-1][y] = 1;
-		theGrid[x-1][y-1] = 1;
-		theGrid[x][y-1] = 1;
-		theGrid[x][y] = 1;
-		theGrid[x+1][y] = 1;
-		theGrid[x][y+1] = 1;
- 		colorGrid[x-1][y] = color;
-		colorGrid[x-1][y-1] = color;
-		colorGrid[x][y-1] = color;
-		colorGrid[x][y] = color;
-		colorGrid[x+1][y] = color;
-		colorGrid[x][y+1] = color;
-	}	else if (symbol=="blinker") {
-		theGrid[x-1][y] = 1;
-		theGrid[x+1][y] = 1;
-		theGrid[x][y] = 1; 
- 		colorGrid[x-1][y] = color;
-		colorGrid[x+1][y] = color;
-		colorGrid[x][y] = color;
-	}	else if (symbol=="glider") {
-		theGrid[x][y-1] = 1;
-		theGrid[x+1][y] = 1;
-		theGrid[x][y+1] = 1; 
-		theGrid[x-1][y+1] = 1; 
-		theGrid[x+1][y+1] = 1; 
-		colorGrid[x][y-1] = color;
-		colorGrid[x+1][y] = color;
-		colorGrid[x][y+1] = color; 
-		colorGrid[x-1][y+1] = color; 
-		colorGrid[x+1][y+1] = color; 
-	}	else if (symbol=="tub") {
-		theGrid[x][y-1] = 1;
-		theGrid[x+1][y] = 1;
-		theGrid[x][y+1] = 1; 
-		theGrid[x-1][y] = 1; 
-		colorGrid[x][y-1] = color;
-		colorGrid[x+1][y] = color;
-		colorGrid[x][y+1] = color; 
-		colorGrid[x-1][y] = color; 
+	} else {
+		theShape = (shapes.shapes[symbol]);
+		for (var row=0; row<theShape.length;row++) {
+			for (var column=0; column<theShape[row].length;column++) {
+				theGrid[x+column][y+row] = theShape[row][column];
+			}
+		}
 	}
+	// } else if (symbol=="block"){
+	// 	theGrid[x][y] = 1;
+	// 	theGrid[x+1][y] = 1;
+	// 	theGrid[x][y+1] = 1;
+	// 	theGrid[x+1][y+1] = 1;
+	// 	colorGrid[x][y] = color;
+	// 	colorGrid[x][y+1] = color;
+	// 	colorGrid[x+1][y] = color;
+	// 	colorGrid[x+1][y+1] = color;
+ //  } else if (symbol=="boat") {
+	// 	theGrid[x-1][y] = 1;
+	// 	theGrid[x-1][y-1] = 1;
+	// 	theGrid[x][y-1] = 1;
+	// 	theGrid[x][y] = 1;
+	// 	theGrid[x+1][y] = 1;
+	// 	theGrid[x][y+1] = 1;
+ // 		colorGrid[x-1][y] = color;
+	// 	colorGrid[x-1][y-1] = color;
+	// 	colorGrid[x][y-1] = color;
+	// 	colorGrid[x][y] = color;
+	// 	colorGrid[x+1][y] = color;
+	// 	colorGrid[x][y+1] = color;
+	// }	else if (symbol=="blinker") {
+	// 	theGrid[x-1][y] = 1;
+	// 	theGrid[x+1][y] = 1;
+	// 	theGrid[x][y] = 1; 
+ // 		colorGrid[x-1][y] = color;
+	// 	colorGrid[x+1][y] = color;
+	// 	colorGrid[x][y] = color;
+	// }	else if (symbol=="glider") {
+	// 	theGrid[x][y-1] = 1;
+	// 	theGrid[x+1][y] = 1;
+	// 	theGrid[x][y+1] = 1; 
+	// 	theGrid[x-1][y+1] = 1; 
+	// 	theGrid[x+1][y+1] = 1; 
+	// 	colorGrid[x][y-1] = color;
+	// 	colorGrid[x+1][y] = color;
+	// 	colorGrid[x][y+1] = color; 
+	// 	colorGrid[x-1][y+1] = color; 
+	// 	colorGrid[x+1][y+1] = color; 
+	// }	else if (symbol=="tub") {
+	// 	theGrid[x][y-1] = 1;
+	// 	theGrid[x+1][y] = 1;
+	// 	theGrid[x][y+1] = 1; 
+	// 	theGrid[x-1][y] = 1; 
+	// 	colorGrid[x][y-1] = color;
+	// 	colorGrid[x+1][y] = color;
+	// 	colorGrid[x][y+1] = color; 
+	// 	colorGrid[x-1][y] = color; 
+	// }
 
 }
  
