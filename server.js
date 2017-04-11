@@ -24,8 +24,7 @@ setInterval(function() {
   core.updateGrid();
  	
   io.emit('timer', { 
-		data:core.theGrid,
-		color:core.colorGrid
+		data:core.theGrid
 	});
 
 }, 10);

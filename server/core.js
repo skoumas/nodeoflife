@@ -66,16 +66,16 @@ function updateGrid() {
 				switch (totalCells) {
 					case 3:
 						// Question 4 
-						var colorArray = [];
-						colorArray.push (colorGrid[j][k]);
-						colorArray.push (colorGrid[j+1][k+1]);
-						colorArray.push (colorGrid[j][k+1]);
-						colorArray.push (colorGrid[j+1][k]);
-						colorArray.push (colorGrid[j-1][k-1]);
-						colorArray.push (colorGrid[j][k-1]);
-						colorArray.push (colorGrid[j-1][k]);
-						colorArray.push (colorGrid[j][k]);
-						colorGrid[j][k] = averageColors(colorArray); 
+						// var colorArray = [];
+						// colorArray.push (colorGrid[j][k]);
+						// colorArray.push (colorGrid[j+1][k+1]);
+						// colorArray.push (colorGrid[j][k+1]);
+						// colorArray.push (colorGrid[j+1][k]);
+						// colorArray.push (colorGrid[j-1][k-1]);
+						// colorArray.push (colorGrid[j][k-1]);
+						// colorArray.push (colorGrid[j-1][k]);
+						// colorArray.push (colorGrid[j][k]);
+						// colorGrid[j][k] = averageColors(colorArray); 
 						mirrorGrid[j][k] = 1; 
 						break;
 
@@ -150,7 +150,6 @@ function add(x,y,symbol,color) {
 		colorGrid[x][y] = color;
 		colorGrid[x+1][y] = color;
 		colorGrid[x][y+1] = color;
-
 	}	else if (symbol=="blinker") {
 		theGrid[x-1][y] = 1;
 		theGrid[x+1][y] = 1;
