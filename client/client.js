@@ -8,7 +8,16 @@ var gridWidth = gridSize;
 var theGrid = [];
 var colorGrid = [];
 var symbol = "block";
-var socket = io('http://localhost:3000');
+if (typeof(io)=="undefined") {
+	wt("Can't connect to server. Please start node server.js");
+} else {
+	var socket = io('http://localhost:3000');
+	function init() {
+		$("#my_color").css("background-color",color);
+		wt("Welcome. Your color is: " + color);
+	}
+}
+
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
@@ -24,11 +33,6 @@ function getRandomColor() {
 var color = getRandomColor();
 var colorGrid = [];
 init();
-
-function init() {
-	$("#my_color").css("background-color",color);
-	wt("Welcome. Your color is: " + color);
-}
 
 function wt(message){ 
 	$("#terminal_inner").html( $("#terminal_inner").html() + "<br>$ " + message);
@@ -86,7 +90,6 @@ $("#clear").click(function(e){
 });
 // END EVENTS
 
-
 // SOCKET CONTROL
 socket.on('connect', function(data){
 	wt("Connected with server");
@@ -98,7 +101,6 @@ socket.on('disconnect', function(data){
 
 socket.on('timer', function(data){	 
 	theGrid = data.data;
-	colorGrid = data.color;
 	drawGrid()
 });
 // END SOCKET CONTROL
@@ -108,7 +110,8 @@ function drawGrid() {
 	for (var j = 1; j < gridHeight; j++) {  
 		for (var k = 1; k < gridWidth; k++) {  
 			if (theGrid[j][k] === 1) {
-				ctx.fillStyle = colorGrid[j][k];
+				//ctx.fillStyle = colorGrid[j][k];
+				ctx.fillStyle = "red";
 				ctx.fillRect(j, k, 1, 1);
 			}
 
