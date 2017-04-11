@@ -136,57 +136,8 @@ function add(x,y,symbol,color) {
 			}
 		}
 	}
-	// } else if (symbol=="block"){
-	// 	theGrid[x][y] = 1;
-	// 	theGrid[x+1][y] = 1;
-	// 	theGrid[x][y+1] = 1;
-	// 	theGrid[x+1][y+1] = 1;
-	// 	colorGrid[x][y] = color;
-	// 	colorGrid[x][y+1] = color;
-	// 	colorGrid[x+1][y] = color;
-	// 	colorGrid[x+1][y+1] = color;
- //  } else if (symbol=="boat") {
-	// 	theGrid[x-1][y] = 1;
-	// 	theGrid[x-1][y-1] = 1;
-	// 	theGrid[x][y-1] = 1;
-	// 	theGrid[x][y] = 1;
-	// 	theGrid[x+1][y] = 1;
-	// 	theGrid[x][y+1] = 1;
- // 		colorGrid[x-1][y] = color;
-	// 	colorGrid[x-1][y-1] = color;
-	// 	colorGrid[x][y-1] = color;
-	// 	colorGrid[x][y] = color;
-	// 	colorGrid[x+1][y] = color;
-	// 	colorGrid[x][y+1] = color;
-	// }	else if (symbol=="blinker") {
-	// 	theGrid[x-1][y] = 1;
-	// 	theGrid[x+1][y] = 1;
-	// 	theGrid[x][y] = 1; 
- // 		colorGrid[x-1][y] = color;
-	// 	colorGrid[x+1][y] = color;
-	// 	colorGrid[x][y] = color;
-	// }	else if (symbol=="glider") {
-	// 	theGrid[x][y-1] = 1;
-	// 	theGrid[x+1][y] = 1;
-	// 	theGrid[x][y+1] = 1; 
-	// 	theGrid[x-1][y+1] = 1; 
-	// 	theGrid[x+1][y+1] = 1; 
-	// 	colorGrid[x][y-1] = color;
-	// 	colorGrid[x+1][y] = color;
-	// 	colorGrid[x][y+1] = color; 
-	// 	colorGrid[x-1][y+1] = color; 
-	// 	colorGrid[x+1][y+1] = color; 
-	// }	else if (symbol=="tub") {
-	// 	theGrid[x][y-1] = 1;
-	// 	theGrid[x+1][y] = 1;
-	// 	theGrid[x][y+1] = 1; 
-	// 	theGrid[x-1][y] = 1; 
-	// 	colorGrid[x][y-1] = color;
-	// 	colorGrid[x+1][y] = color;
-	// 	colorGrid[x][y+1] = color; 
-	// 	colorGrid[x-1][y] = color; 
-	// }
-
+	
+	updateGrid();
 }
  
 function rand(min,max) {

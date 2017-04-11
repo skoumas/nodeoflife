@@ -38,6 +38,7 @@ init();
 
 function wt(message){ 
 	$("#terminal_inner").html( $("#terminal_inner").html() + "<br>$ " + message);
+	$("#terminal_inner").scrollTop(999999);
 }
 
 function getXY(e) {
@@ -62,6 +63,7 @@ $("canvas").click(function(e){
 		symbol:symbol,
 		color:color,
 	});
+	wt(symbol + " placed at (" + x + ", " + y + ")");
 });
 
 $("canvas").mousemove(function(e){
@@ -73,7 +75,9 @@ $("canvas").mousemove(function(e){
 			symbol:symbol,
 			color:color,
 		}); 
+		wt(symbol + " placed at (" + x + ", " + y + ")");
   }
+	
 });
 
 $(".symbol").click(function(e){
@@ -85,10 +89,12 @@ $(".symbol").click(function(e){
 
 $("#random").click(function(e){
 	socket.emit("random");
+	wt("Creating random canvas.");
 });
 
 $("#clear").click(function(e){
 	socket.emit("clear");
+	wt("Clearing canvas.");
 });
 // END EVENTS
 

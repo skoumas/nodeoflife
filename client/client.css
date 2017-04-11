@@ -35,6 +35,7 @@ canvas {
 	color:#333;
 	text-align: left;
 	padding:10px;
+	overflow: scroll;
 }
 
 .symbol {
