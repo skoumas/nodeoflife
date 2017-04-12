@@ -7,7 +7,7 @@ var core = require('./server/core.js');
 //SOCKET ON CONNECT
 io.on('connect',function(socket) {
 
-	socket.on('click',function() {
+	socket.on('click',function(data) {
     core.add(data.x,data.y,data.symbol,data.color);
   });
 
@@ -22,11 +22,15 @@ io.on('connect',function(socket) {
 });
 
 setInterval(function() {  
-  core.updateGrid();
-  
+
   io.emit('timer', { 
     data:core.theGrid
-	});
+  });
+
+}, 1000);
+
+setInterval(function() {  
+  core.updateGrid();
 
 }, 10);
 

@@ -6,6 +6,8 @@ var theGrid = [];
 var gridHeight = gridSize;
 var gridWidth = gridSize;
 var colorGrid = [];
+var started = false;
+var run = true;
 var symbol = "block";
 var color = getRandomColor();
 var c = document.getElementById("myCanvas");
@@ -14,7 +16,7 @@ var ctx = c.getContext("2d");
 if (typeof(io) == "undefined"){
   wt("Can't connect to server. Please start node server.js");
 } else {
-  var socket = io("http://www.skoumas.com:3000");
+  var socket = io("http://localhost:3000");
 }
 
 function init() {
@@ -36,6 +38,105 @@ init();
 function wt(message) {
   $("#terminal_inner").html( $("#terminal_inner").html() + "<br>$ " + message);
   $("#terminal_inner").scrollTop(999999);
+}
+
+function tick() {
+	if (!run) return;
+	drawGrid();
+  updateGrid();
+  requestAnimationFrame(tick);
+}
+
+// function tick() {
+
+// setInterval(function(){ 
+// if (!run) return;
+// 	drawGrid();
+//   updateGrid();
+// }, 10);
+// }
+
+
+
+
+function createArray(rows) {  
+	var arr = [];
+	for (var i = 0; i < rows; i++) {
+		arr[i] = [];
+	}
+	return arr;
+}
+
+function updateGrid() { 
+  var tempGrid = createArray(gridSize);
+  for (var j = 1; j < gridHeight - 1; j++) {  
+    for (var k = 1; k < gridWidth - 1; k++) {  
+
+      var totalCells = 0;
+      totalCells += theGrid[j - 1][k - 1];
+      totalCells += theGrid[j - 1][k]; 
+      totalCells += theGrid[j - 1][k + 1]; 
+      totalCells += theGrid[j][k - 1]; 
+      totalCells += theGrid[j][k + 1]; 
+      totalCells += theGrid[j + 1][k - 1]; 
+      totalCells += theGrid[j + 1][k]; 
+      totalCells += theGrid[j + 1][k + 1]; 
+
+      if (theGrid[j][k] === 0) {
+
+        switch (totalCells) {
+          case 3:
+            // Question 4 
+            // var colorArray = [];
+            // colorArray.push (colorGrid[j][k]);
+            // colorArray.push (colorGrid[j+1][k+1]);
+            // colorArray.push (colorGrid[j][k+1]);
+            // colorArray.push (colorGrid[j+1][k]);
+            // colorArray.push (colorGrid[j-1][k-1]);
+            // colorArray.push (colorGrid[j][k-1]);
+            // colorArray.push (colorGrid[j-1][k]);
+            // colorArray.push (colorGrid[j][k]);
+            // colorGrid[j][k] = averageColors(colorArray); 
+            tempGrid[j][k] = 1; 
+            break;
+
+          default:
+            tempGrid[j][k] = 0;  
+        }
+
+      } else if (theGrid[j][k] === 1) { 
+
+      switch (totalCells) {
+        case 0:
+        case 1:
+          tempGrid[j][k] = 0;  
+          break;
+        case 2:
+        case 3:
+          tempGrid[j][k] = 1;  
+          break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+          tempGrid[j][k] = 0;  
+          break;
+        default:
+          tempGrid[j][k] = 0;  
+      }
+
+    }
+  }
+}
+
+  for (var j = 0; j < gridHeight; j++) {  
+    for (var k = 0; k < gridWidth; k++) { 
+      theGrid[j][k] = tempGrid[j][k];
+    }
+  }
+
+
 }
 
 function getXY(e) {
@@ -104,8 +205,15 @@ socket.on("disconnect", function(){
 });
 
 socket.on("timer", function(data){
+	theGrid = [];
   theGrid = data.data;
-  drawGrid()
+	drawGrid();
+	if (!started) {
+		tick();
+		started = true;
+	}
+	
+  //drawGrid();
 });
 // END SOCKET CONTROL
 

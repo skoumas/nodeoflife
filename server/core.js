@@ -128,6 +128,7 @@ function add(x,y,symbol,color) {
 			theShape = (shapes.shapes[symbol]);
 			for (var row=0; row<theShape.length;row++) {
 				for (var column=0; column<theShape[row].length;column++) {
+					if (theShape[row][column]==1)
 					theGrid[x+column][y+row] = theShape[row][column];
 				}
 			}
