@@ -1,5 +1,4 @@
-var shapes = 
-	{
+var shapes = {
 	block:[ 
 		[0,0,0,0],
 		[0,1,1,0],

@@ -1,3 +1,4 @@
+/* jshint node: true */
 var app = require('express')();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -6,25 +7,25 @@ var core = require('./server/core.js');
 //SOCKET ON CONNECT
 io.on('connect',function(socket) {
 
-	socket.on('click', function (data) {
-  	core.add(data.x,data.y,data.symbol,data.color);
+	socket.on('click',function() {
+    core.add(data.x,data.y,data.symbol,data.color);
   });
 
-	socket.on('random', function (data) {
-  	core.fillRandom();
+	socket.on('random',function() {
+    core.fillRandom();
   });
 	
-	socket.on('clear', function (data) {
-  	core.clear();
+	socket.on('clear',function() {
+    core.clear();
   });
 
 });
 
 setInterval(function() {  
   core.updateGrid();
- 	
+  
   io.emit('timer', { 
-		data:core.theGrid
+    data:core.theGrid
 	});
 
 }, 10);
