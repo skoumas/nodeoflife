@@ -1,11 +1,13 @@
 "use strict";
 var gridSize = 300;
-var x;
-var y;
+var clickPoints = [];
 var theGrid = [];
 var gridHeight = gridSize;
 var gridWidth = gridSize;
+var pressed;
+var points = [];
 var colorGrid = [];
+var id = 0;
 var started = false;
 var run = true;
 var symbol = "block";
@@ -22,6 +24,8 @@ if (typeof(io) == "undefined"){
 function init() {
   $("#my_color").css("background-color",color);
   wt("Welcome. Your color is: " + color);
+	id = Math.round(+new Date()/1000);
+	wt("Welcome. You are user: " + id);
 }
 
 function getRandomColor() {
@@ -140,6 +144,7 @@ function updateGrid() {
 }
 
 function getXY(e) {
+	var x,y;
   if (e.pageX || e.pageY) {
     x = e.pageX;
     y = e.pageY;
@@ -150,32 +155,83 @@ function getXY(e) {
     x = Math.round(x);
     y = Math.round(y);
   }
+	return [x,y];
 }
 
 // EVENTS
 $("canvas").click(function(e) {
-  getXY(e);
+ 
   socket.emit("click",{
-    x:x,
-    y:y,
+    x:getXY(e)[0],
+    y:getXY(e)[1],
     symbol:symbol,
-    color:color
+    color:color,
+		id:id
   });
-  wt(symbol + " placed at (" + x + ", " + y + ")");
+  wt(symbol + " placed at (" + getXY(e)[0] + ", " + getXY(e)[1] + ")");
+});
+
+$("canvas").mouseup(function(e){
+	pressed = false;
+	 
+	points.forEach(function(point) {
+		add(point[0],point[1],symbol,color);
+	});
+	socket.emit("mouseMove",{
+    points:points,
+    symbol:symbol,
+    color:color,
+		id:id
+	});
+	points = [];
+
+});
+
+
+
+$("canvas").mousedown(function(e){
+	pressed = true;
 });
 
 $("canvas").mousemove(function(e){
-  if(e.which == 1){
-      getXY(e);
-      socket.emit("click",{
-      x:x,
-      y:y,
-      symbol:symbol,
-      color:color
-    });
-    wt(symbol + " placed at (" + x + ", " + y + ")");
-  }
+	if (pressed) {
+		var x,y;
+		x = getXY(e)[0];
+	  y = getXY(e)[1];
+		socket.emit("click",{
+	    x:x,
+			y:y,
+	    symbol:symbol,
+	    color:color
+		});
+		return;
+	}
+  if (pressed) {
+		points.push([x,y]);
+		wt(symbol + " placed at (" + x + ", " + y + ")");
+	}
 });
+
+function add(x,y,symbol,color) {
+
+	if ((x<gridSize && y<gridSize) && (x!=null) && (y!=null)) {
+		//colorGrid[x][y] = "#000000";
+		if (symbol==null) {
+			theGrid[x][y] = 1;
+		} else {
+			var theShape = (shapes[symbol]);
+			for (var row=0; row<theShape.length;row++) {
+				for (var column=0; column<theShape[row].length;column++) {
+					if (theShape[row][column]==1)
+					theGrid[x+column][y+row] = theShape[row][column];
+ 
+				}
+			}
+		}
+		
+		updateGrid();
+	}
+}
 
 $(".symbol").click(function(){
   $(".symbol").removeClass("selected-symbol");
@@ -203,6 +259,14 @@ socket.on("connect", function(){
 socket.on("disconnect", function(){
   wt("Disconnected from server");
 });
+
+
+socket.on("click", function(data){
+  if (data.id!=id) {
+		add(data.x,data.y,data.symbol,data.color);
+	}
+});
+
 
 socket.on("timer", function(data){
 	theGrid = [];

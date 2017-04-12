@@ -9,6 +9,22 @@ io.on('connect',function(socket) {
 
 	socket.on('click',function(data) {
     core.add(data.x,data.y,data.symbol,data.color);
+    io.emit('click', { 
+      x:data.x,
+      y:data.y,
+      symbol:data.symbol,
+      color:data.color,
+      id:data.id
+    });
+  });
+
+  socket.on('mouseMove',function(data) {
+    data.points.forEach(function(point) {
+      core.add(point[0],point[1],data.symbol,data.color);
+    });
+    io.emit('timer', { 
+      data:core.theGrid
+    });
   });
 
 	socket.on('random',function() {
@@ -22,16 +38,13 @@ io.on('connect',function(socket) {
 });
 
 setInterval(function() {  
-
   io.emit('timer', { 
     data:core.theGrid
   });
-
 }, 1000);
 
 setInterval(function() {  
   core.updateGrid();
-
 }, 10);
 
 core.fillRandom();
