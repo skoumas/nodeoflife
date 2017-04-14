@@ -8,7 +8,7 @@ var gol = new Gol($("canvas")); //Load the canvas gol visualizer
 if (typeof(io) == "undefined"){
   terminal.write("Can't connect to server. Please start node server.js");
 } else {
-  var socket = io("http://localhost:3000");
+  var socket = io("http://www.skoumas.com:3000");
 	$("#my_color").css("background-color",user.getColor());
 	$("#my_id").html(user.getId());
 	terminal.write("Welcome. Your color is: " + user.getColor());
