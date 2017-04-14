@@ -1,3 +1,4 @@
+'use strict';
 function Gol(object) {
 	var gridSize = 50;
 	var object = object;

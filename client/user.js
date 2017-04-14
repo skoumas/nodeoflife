@@ -1,3 +1,4 @@
+'use strict';
 function User() {
 	var symbol = "block";
 	var color = getRandomColor();
