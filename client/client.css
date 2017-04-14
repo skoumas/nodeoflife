@@ -6,8 +6,8 @@ body{
 
 canvas {
 	cursor: crosshair;
-	width:600px;
-	height:600px;
+	width:700px;
+	height:700px;
 	margin-left:auto;
 	margin-right:auto;
 	background-color: white;
@@ -31,10 +31,9 @@ canvas {
 }
 
 #terminal_inner {
-	height:80vh;
-	margin:20px;
-	font-family:courier;
-	color:#333;
+	height: 80vh;
+	font-family: courier;
+	color: #333;
 	text-align: left;
 	overflow: scroll;
 }

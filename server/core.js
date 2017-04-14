@@ -38,14 +38,24 @@ function updateGrid() {
 					case 3:
 						// Question 4 
 						tcolorArray = [];
+						if (tempGrid[j+1][k+1][0]==1)
 						tcolorArray.push (tempGrid[j+1][k+1][1]);
+						if (tempGrid[j][k+1][0]==1)
 						tcolorArray.push (tempGrid[j][k+1][1]);
+						if (tempGrid[j+1][k][0]==1)
 						tcolorArray.push (tempGrid[j+1][k][1]);
+						if (tempGrid[j-1][k-1][0]==1)
 						tcolorArray.push (tempGrid[j-1][k-1][1]);
+						if (tempGrid[j][k-1][0]==1)
 						tcolorArray.push (tempGrid[j][k-1][1]);
+						if (tempGrid[j-1][k][0]==1)
 						tcolorArray.push (tempGrid[j-1][k][1]);
+						if (tempGrid[j][k][0]==1)
 						tcolorArray.push (tempGrid[j][k][1]);
-						tempGrid[j][k][1] = mixColors(tcolorArray);
+						if (tcolorArray.length>0) {
+							tempGrid[j][k][1] = mixColors(tcolorArray);
+						}
+						
 						tempGrid[j][k][0] = 1; 
 						break;
 

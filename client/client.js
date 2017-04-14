@@ -2,6 +2,7 @@
 var gridSize = 100;
 var theGrid = [];
 var hoverk,hoverj;
+var multiplier = 7;
 var symbol = "block";
 var color = getRandomColor();
 var id = Math.round(+new Date()/1000);
@@ -43,8 +44,8 @@ function getXY(e) {
     y = e.pageY;
     x = x - $("canvas").offset().left;
     y = y - $("canvas").offset().top;
-    x = x /6;
-    y = y /6;
+    x = x / multiplier;
+    y = y / multiplier;
     x = Math.round(x);
     y = Math.round(y);
   }
@@ -95,8 +96,8 @@ $(".symbol").click(function(){
 })
 
 $("#random").click(function(){
-  socket.emit("random");
-  wt("Creating random canvas.");
+  //socket.emit("random");
+  //wt("Creating random canvas.");
 });
 
 $("#clear").click(function(){
@@ -110,7 +111,7 @@ if (typeof(socket)!=="undefined") {
 	  wt("Connected with server");
 		setInterval(function() {  
 		  drawGrid();
-		},1000);
+		},200);
 	});
 
 	socket.on("disconnect", function(){
@@ -125,17 +126,20 @@ if (typeof(socket)!=="undefined") {
 	  theGrid = ((data.data));
 	});
 
-	
 }
  
 function drawGrid() {
+
+	
+
+
   if (typeof(socket)==="undefined") return;
-  ctx.clearRect(0, 0, 600, 600);
+  ctx.clearRect(0, 0, 100 * multiplier, 100 * multiplier);
   for (var j = 1; j < gridSize; j++) {
     for (var k = 1; k < gridSize; k++) {	 
       if (theGrid[j][k][0] == 1) {
 				ctx.fillStyle = theGrid[j][k][1];
-        ctx.fillRect(j*6, k*6, 6, 6);
+        ctx.fillRect(j*multiplier, k*multiplier, multiplier, multiplier);
       }
     }
   }
@@ -145,8 +149,26 @@ function drawGrid() {
 		for (var column=0; column<theShape[row].length;column++) {
 			if (theShape[row][column]==1) {
 				ctx.fillStyle = color;
-				ctx.fillRect((hoverj+column)*6,(hoverk+row)*6,6,6); 
+				ctx.fillRect((hoverj+column)*multiplier,(hoverk+row)*multiplier,multiplier,multiplier); 
 			}
 		}
 	}
+for (var j = multiplier; j < gridSize * multiplier; j=j+multiplier) {
+		ctx.beginPath();
+		ctx.strokeStyle = "#f3f3f3";
+		 
+		ctx.moveTo(j,0);
+		ctx.lineTo(j,gridSize * multiplier);
+		ctx.stroke();
+	}
+
+for (var k = multiplier; k < gridSize * multiplier; k=k+multiplier) {
+		ctx.beginPath();
+		ctx.strokeStyle = "#f3f3f3";
+		 
+		ctx.moveTo(0,k);
+		ctx.lineTo(gridSize * multiplier,k);
+		ctx.stroke();
+	}
+
 }

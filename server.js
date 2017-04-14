@@ -37,7 +37,7 @@ io.on('connect',function(socket) {
   });
 
 	socket.on('random',function() {
-    core.fillRandom();
+    //core.fillRandom();
   });
 	
 	socket.on('clear',function() {
@@ -52,11 +52,11 @@ setInterval(function() {
     data:core.theGrid
    //color: core.colorGrid
   });
-},1000);
+},200);
 
 // setInterval(function() {  
 //   core.updateGrid();
 // }, 10);
 
-core.fillRandom();
+core.clear();
 server.listen(3000);

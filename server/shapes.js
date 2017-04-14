@@ -1,4 +1,5 @@
 var shapes = {
+
 	block:[ 
 		[0,0,0,0],
 		[0,1,1,0],
@@ -42,6 +43,7 @@ var shapes = {
 		[0,0,0,0,0,0]
 	]
 };
+
 if (typeof(module)!=="undefined") {
 	module.exports.shapes = shapes;
 }
