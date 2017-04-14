@@ -3,6 +3,7 @@ function gol (options) {
 	var shapes = require('./shapes.js');
 	var mixColors = require('mix-colors');
 	var theGrid = createArray(gridSize);
+	clear();
 
 	function createArray(rows) {  
 		var arr = [];
@@ -103,6 +104,10 @@ function gol (options) {
 	 
 	}
 
+	function setGrid(newGrid) {
+		theGrid = newGrid;
+	}
+
 	function add(x,y,symbol,color) {
 	 
 		if ((x<gridSize-4 && y<gridSize-4) && (x!=null) && (y!=null)) {
@@ -110,7 +115,7 @@ function gol (options) {
 				theGrid[x][y][0] = 1;
 				theGrid[x][y][1] = color;
 			} else {
-				theShape = (shapes.shapes[symbol]);
+				theShape = (shapes[symbol]);
 				for (var row=0; row<theShape.length;row++) {
 					for (var column=0; column<theShape[row].length;column++) {
 						theGrid[x+column][y+row][1] = color;
@@ -155,11 +160,11 @@ function gol (options) {
 	}
 
 	return {
-	    clear: function() { clear(); },
-			fillRandom: function() {fillRandom(); },
-			add: function() { add(); },
-			updateGrid: function() { updateGrid(); },
-			getGrid: function() { return getGrid(); }  
+    clear: function() { clear(); },
+		fillRandom: function() {fillRandom(); },
+		add: function(x,y,s,c) { add(x,y,s,c); },
+		updateGrid: function() { updateGrid(); },
+		getGrid: function() { return theGrid; }  
 	}
 };
 

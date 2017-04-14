@@ -45,5 +45,5 @@ var shapes = {
 };
 
 if (typeof(module)!=="undefined") {
-	module.exports.shapes = shapes;
+	module.exports = shapes;
 }
