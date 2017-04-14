@@ -15,7 +15,6 @@ node server
 5) Click any shape from the top bar
 6) Click in the grid to place it
 
-
 ### How it works
 First the server starts and creates an empty grid. That grid is loaded with zeros and a color 
 that is for now white: #FFFFFF. After that then main loop is activated through a 1 second interval. 
@@ -25,7 +24,6 @@ From the client perspective when the browser loads we load a new user using `use
 to that user an id, a color and a symbol. Also we setup up the terminal so we can see some messages
 on what is going on. Finally we load the gol class which is responsible for displaying the grid we are 
 getting from the socket.io. Everytime we receive a socket.io signal then the drawGrid() function is called.
-
 
 ### Structure
 #### Server
