@@ -1,4 +1,7 @@
 'use strict';
+/**
+* Gol is an abstract base class that displays the pixel grid
+*/
 function Gol(object) {
 	var gridSize = 50;
 	var object = object;
@@ -8,6 +11,11 @@ function Gol(object) {
 	var hoverk,hoverj;
 	var multiplier = 14;
 
+	/**
+	 * Gets the exact X Y from the canvas pixels to the absolute pixel
+	 * @param {event} e
+	 * @return null
+	 */
 	function getXY(e) {
 		var x,y;
 	  if (e.pageX || e.pageY) {
@@ -22,7 +30,12 @@ function Gol(object) {
 	  }
 		return [x,y];
 	}
-
+	
+	/**
+	 * When the canvas is clicked
+	 * @param {event} e
+	 * @return null
+	*/
 	object.click(function(e) {
 	  socket.emit("click",{
 	    x:getXY(e)[0],
@@ -34,13 +47,26 @@ function Gol(object) {
 		add(getXY(e)[0],getXY(e)[1],user.symbol,user.getColor());
 	  terminal.write(user.getSymbol() + " placed at (" + getXY(e)[0] + ", " + getXY(e)[1] + ")");
 	});
-
+	
+	/**
+	 * when we move the mouse over the canvas
+	 * @param {event} e
+	 * @return null
+	*/
 	object.mousemove(function(e){	
 		hoverj = getXY(e)[0];
 		hoverk = getXY(e)[1];
 		drawGrid();
 	});
 
+	/**
+	 * Adds a new symbol to the canvas
+	 * @param {integer} x : The X pixel
+	 * @param {integer} y : The Y pixel
+	 * @param {string} symbol : The type of symbol
+	 * @param {string} color : The hex color to draw
+	 * @return null
+	*/
 	function add(x,y,symbol,color) {
 		if ((x<gridSize-6 && y<gridSize-6) && (x!=null) && (y!=null)) {
 			if (symbol==null) {
@@ -59,6 +85,10 @@ function Gol(object) {
 		}
 	}
 
+	/**
+	 * Draws the pixels, the hover symbol and the grid
+	 * @return null
+	*/
 	function drawGrid() {
 
 	  if (typeof(socket)==="undefined") return;

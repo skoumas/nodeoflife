@@ -5,11 +5,13 @@ var io = require('socket.io')(server);
 var gol = require('./server/gol.js')({gridSize: 50});
 
 io.on('connect',function(socket) {
-
+  // Send the grid for the first time.
   io.emit('timer', { 
     data:gol.getGrid()
   });
-
+  
+  // If the user clicked add and then emit the 
+  // click to other browsers (to show the click instantly)
 	socket.on('click',function(data) {
     gol.add(data.x,data.y,data.symbol,data.color);
     io.emit('click', { 
@@ -21,15 +23,16 @@ io.on('connect',function(socket) {
     });
   });
 	
+  // Clears the grid
 	socket.on('clear',function() {
     gol.clear();
   });
 
 });
 
+// Main interval that updates and broadcasts the grid
 setInterval(function() {  
   gol.updateGrid();
- 
   io.emit('timer', { 
     data:gol.getGrid()
   });

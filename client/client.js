@@ -1,8 +1,10 @@
 'use strict';
-var user = new User();
-var terminal = new Terminal($("#terminal_inner"));
-var gol = new Gol($("canvas"));
+// Main objects
+var user = new User(); //Create the new user
+var terminal = new Terminal($("#terminal_inner")); //Load the terminal
+var gol = new Gol($("canvas")); //Load the canvas gol visualizer
 
+// Check if server is online
 if (typeof(io) == "undefined"){
   terminal.write("Can't connect to server. Please start node server.js");
 } else {
@@ -36,7 +38,7 @@ if (typeof(socket)!=="undefined") {
 
 }
 
-// Basic UI operations
+// When the symbol is switched
 $(".symbol").click(function(){
   $(".symbol").removeClass("selected-symbol");
   user.setSymbol( $(this).attr("data-id"));
@@ -44,6 +46,7 @@ $(".symbol").click(function(){
   $(this).addClass("selected-symbol");
 })
 
+// Clear the socket
 $("#clear").click(function(){
   socket.emit("clear");
   terminal.write("Clearing canvas.");

@@ -1,3 +1,6 @@
+/**
+* Gol is the class that implements the Game of Life.
+*/
 function gol (options) {  
 	var gridSize = options.gridSize || 100; 
 	var shapes = require('./shapes.js');
@@ -5,6 +8,10 @@ function gol (options) {
 	var theGrid = createArray(gridSize);
 	clear();
 
+	/**
+	 * Creates multidimensional array to store the pixel properties
+	 * @return array
+	*/
 	function createArray(rows) {  
 		var arr = [];
 		for (var i = 0; i < rows; i++) {  
@@ -18,10 +25,27 @@ function gol (options) {
 		return arr;
 	}
 
+	/**
+	 * Returns the grid
+	 * @return array
+	*/
 	function getGrid() {
 		return theGrid;
 	}
 
+	/**
+	 * Sets the grid to a new value
+	 * @param {array} newGrid
+	 * @return null
+	*/
+	function setGrid(newGrid) {
+		theGrid = newGrid;
+	}
+
+	/**
+	 * The main loop function that applies the Game of Life logic.
+	 * @return null
+	*/
 	function updateGrid() {  
 		var tcolorArray = [];
 		tempGrid = createArray(gridSize);
@@ -100,14 +124,17 @@ function gol (options) {
 				theGrid[j][k][0] = tempGrid[j][k][0];
 				theGrid[j][k][1] = tempGrid[j][k][1];
 			}
-		}
-	 
+		} 
 	}
 
-	function setGrid(newGrid) {
-		theGrid = newGrid;
-	}
-
+	/**
+	 * Adds a new symbol to the grid
+	 * @param {x} x
+	 * @param {y} y
+	 * @param {symbol} symbol
+	 * @param {color} color
+	 * @return null
+	*/
 	function add(x,y,symbol,color) {
 	 
 		if ((x<gridSize-4 && y<gridSize-4) && (x!=null) && (y!=null)) {
@@ -125,14 +152,21 @@ function gol (options) {
 					}
 				}
 			}
-			updateGrid();
 		}
 	}
 
+	/**
+	 * Helping function for random number generation
+	 * @return integer
+	*/
 	function rand(min,max) {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
 
+	/**
+	 * Creates a random distribution of on and off cells
+	 * @return null
+	*/
 	function fillRandom() {  
 		for (var j = 0; j < gridSize; j++) {  
 			for (var k = 0; k < gridSize; k++) { 
@@ -150,6 +184,10 @@ function gol (options) {
 		}
 	}
 
+	/**
+	 * Clears the grid to a null/empty one
+	 * @return null
+	*/
 	function clear() {  
 		for (var j = 0; j < gridSize; j++) {  
 			for (var k = 0; k < gridSize; k++) { 	 
