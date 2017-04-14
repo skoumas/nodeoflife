@@ -34,12 +34,13 @@ getting from the socket.io. Everytime we receive a socket.io signal then the dra
 ### Structure
 #### Server
 server.js
-	- server/gol.js
-  - server/shapes.js
+|- server/gol.js
+|- server/shapes.js
 #### Client
-	- client/gol.js
-  - client/terminal.js
-  - client/user.js
+|- client/client.js
+|- client/gol.js
+|- client/terminal.js
+|- client/user.js
 
 ### Updates
 - Created shapes.js in which very easily we import a new shape at the main grid
