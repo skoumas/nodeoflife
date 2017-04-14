@@ -10,9 +10,13 @@ NodeOfLife is a nodejs application that utiliases the Game of Life algorithm imp
 
 ### How to run
 1) Load terminal
-2) node server.js
-3) Open index.html
-4) Wait a couple of seconds and you should be able to see the signal
+2) start the server
+> node server
+or
+> nodejs server
+3) Open index.html with a browser
+4) Wait a couple of seconds and you should be able to see the grid
+
 
 ### Technical Choices
 1) Chosen nodejs as I enjoy working with JS back end and front-end
@@ -24,5 +28,3 @@ NodeOfLife is a nodejs application that utiliases the Game of Life algorithm imp
 
 Thinking ways to make the whole thing faster including compressing the table in a way or limiting the
 amount of data sent. Perhaps also good idea to find a better way to send the colors.
-
-### Links to other projects
