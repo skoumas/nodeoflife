@@ -27,14 +27,18 @@ getting from the socket.io. Everytime we receive a socket.io signal then the dra
 
 ### Structure
 #### Server
-server.js
-server/gol.js
-server/shapes.js
+
+	server.js
+	server/gol.js
+	server/shapes.js
+
 #### Client
-client/client.js
-client/gol.js
-client/terminal.js
-client/user.js
+
+	client/client.js
+	client/gol.js
+	client/terminal.js
+	client/user.js
+
 
 ### Technical Choices
 Nodejs and socketio for the backend and transmition. Jquery for playing with the DOM, Bootstrap CSS for the basic styling and mix-colors npm package for mixing the colors together. JSlint for beautifing the code and applying a lot of commenting as well.
