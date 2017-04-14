@@ -15,7 +15,7 @@ if (typeof(io) == "undefined"){
 	terminal.write("Welcome. You are user: " + user.getId());
 }
 
-if (typeof(socket)!=="undefined") {
+if (typeof(socket)!=="undefined"){
 
 	socket.on("connect", function(){
 	  terminal.write("Connected with server");
