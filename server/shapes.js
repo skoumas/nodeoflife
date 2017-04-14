@@ -42,5 +42,6 @@ var shapes = {
 		[0,0,0,0,0,0]
 	]
 };
-
-module.exports.shapes = shapes;
+if (typeof(module)!=="undefined") {
+	module.exports.shapes = shapes;
+}
