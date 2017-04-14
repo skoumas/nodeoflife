@@ -10,10 +10,6 @@ NodeOfLife is a nodejs application that utiliases the Game of Life algorithm imp
 ```js
 node server
 ```
-or
-```js
-nodejs server
-```
 3) Open index.html with a browser
 4) Wait a couple of seconds and you should be able to see the grid
 5) Click any shape from the top bar
