@@ -11,9 +11,13 @@ NodeOfLife is a nodejs application that utiliases the Game of Life algorithm imp
 ### How to run
 1) Load terminal
 2) start the server
-> node server
+```js
+node server
+```
 or
-> nodejs server
+```js
+nodejs server
+```
 3) Open index.html with a browser
 4) Wait a couple of seconds and you should be able to see the grid
 

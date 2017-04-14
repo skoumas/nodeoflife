@@ -6,7 +6,8 @@ var gol = require('./server/core.js');
 
 //SOCKET ON CONNECT
 io.on('connect',function(socket) {
-  gol.clear();
+  
+  
   gol.updateGrid();
 
   io.emit('timer', { 
