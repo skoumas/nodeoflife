@@ -20,18 +20,40 @@
 					<img class="symbol" data-id="glider" width=40 src="client/images/glider.gif"/>
 					<img class="symbol" data-id="blinker" width=40 src="client/images/blinker.gif"/>
 					<img class="symbol" data-id="beacon" width=40 src="client/images/beacon.gif"/>
-					Your randomly selected color is <span id="my_color" style="display:inline-block;width:15px;height:15px"></span>
+					
 				</div>
 			</div>
 			
 			<div class="col-lg-3">
-				<div id="info">
-					<button class="btn btn-primary" id="random">Random</button>
-					<button class="btn btn-primary" id="clear">Clear</button>
+				<div class="info">
+					<p> Welcome to Node of Life. </p>
+					<p> This demo is using the 'Game of Life' algorithm to play with a set of rules affecting
+					each pixel, resulting in this 'organic like' grid. There is a nodejs server that sends the
+					grid using a socket.io connection </p>
+					<p> To play just select your shape and click on the canvas to place that symbol and observe
+					it's reactions </p>
+					
+				</div>
+				<div class="info">
+					<table class="table">
+						<tr>
+							<td>Id</td>
+							<td><span id="my_id" style="display:inline-block;width:15px;height:15px"></span></td>
+						</tr>
+						<tr>
+							<td>Color</td>
+							<td><span id="my_color" style="display:inline-block;width:15px;height:15px"></span></td>
+						</tr>
+					</table>
+					 
+				</div>
+				<div class="info">
+					<button class="btn btn-primary" id="random">Random Grid</button>
+					<button class="btn btn-primary" id="clear">Clear the Grid</button>
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<canvas id="myCanvas" width="300" height="300"></canvas>
+				<canvas id="myCanvas" width="600" height="600"></canvas>
 			</div>
 
 			<div class="col-lg-3">
@@ -43,7 +65,7 @@
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+	<script src="http://www.skoumas.com:3000/socket.io/socket.io.js"></script>
 	<script src="server/shapes.js"></script>
 	<script src="client/client.js"></script>
 

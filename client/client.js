@@ -1,5 +1,5 @@
 "use strict";
-var gridSize = 300;
+var gridSize = 100;
 var clickPoints = [];
 var theGrid = [];
 var gridHeight = gridSize;
@@ -10,15 +10,19 @@ var colorGrid = [];
 var id = 0;
 var started = false;
 var run = true;
+var hoverk,hoverj;
 var symbol = "block";
 var color = getRandomColor();
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
+ 
+
 if (typeof(io) == "undefined"){
   wt("Can't connect to server. Please start node server.js");
 } else {
-  var socket = io("http://localhost:3000");
+  var socket = io("http://www.skoumas.com:3000");
+	init();
 }
 
 function init() {
@@ -26,6 +30,7 @@ function init() {
   wt("Welcome. Your color is: " + color);
 	id = Math.round(+new Date()/1000);
 	wt("Welcome. You are user: " + id);
+	$("#my_id").html(id);
 }
 
 function getRandomColor() {
@@ -36,8 +41,6 @@ function getRandomColor() {
   }
   return color;
 }
-
-init();
 
 function wt(message) {
   $("#terminal_inner").html( $("#terminal_inner").html() + "<br>$ " + message);
@@ -150,8 +153,8 @@ function getXY(e) {
     y = e.pageY;
      x = x - $("canvas").offset().left;
      y = y - $("canvas").offset().top;
-    x = x /2;
-    y = y /2;
+    x = x /6;
+    y = y /6;
     x = Math.round(x);
     y = Math.round(y);
   }
@@ -168,6 +171,7 @@ $("canvas").click(function(e) {
     color:color,
 		id:id
   });
+	add(getXY(e)[0],getXY(e)[1],symbol,color);
   wt(symbol + " placed at (" + getXY(e)[0] + ", " + getXY(e)[1] + ")");
 });
 
@@ -177,23 +181,27 @@ $("canvas").mouseup(function(e){
 	points.forEach(function(point) {
 		add(point[0],point[1],symbol,color);
 	});
-	socket.emit("mouseMove",{
-    points:points,
-    symbol:symbol,
-    color:color,
-		id:id
-	});
+	// socket.emit("mouseMove",{
+ //    points:points,
+ //    symbol:symbol,
+ //    color:color,
+	// 	id:id
+	// });
 	points = [];
 
 });
-
-
 
 $("canvas").mousedown(function(e){
 	pressed = true;
 });
 
-$("canvas").mousemove(function(e){
+$("canvas").mousemove(function(e){	
+
+	x = getXY(e)[0];
+	y = getXY(e)[1];
+	hoverj = x;
+	hoverk = y;
+	drawGrid();
 	if (pressed) {
 		var x,y;
 		x = getXY(e)[0];
@@ -213,23 +221,23 @@ $("canvas").mousemove(function(e){
 });
 
 function add(x,y,symbol,color) {
-
+	 
 	if ((x<gridSize && y<gridSize) && (x!=null) && (y!=null)) {
-		//colorGrid[x][y] = "#000000";
 		if (symbol==null) {
-			theGrid[x][y] = 1;
+			theGrid[x][y][0] = 1;
 		} else {
 			var theShape = (shapes[symbol]);
 			for (var row=0; row<theShape.length;row++) {
 				for (var column=0; column<theShape[row].length;column++) {
-					if (theShape[row][column]==1)
-					theGrid[x+column][y+row] = theShape[row][column];
- 
+					if (theShape[row][column]==1) {
+						theGrid[x+column][y+row][1] = color;
+						theGrid[x+column][y+row][0] = theShape[row][column];
+ 					}
 				}
 			}
 		}
-		
-		updateGrid();
+		drawGrid();
+		//updateGrid();
 	}
 }
 
@@ -262,34 +270,47 @@ socket.on("disconnect", function(){
 
 
 socket.on("click", function(data){
-  if (data.id!=id) {
+  //if (data.id!=id) {
 		add(data.x,data.y,data.symbol,data.color);
-	}
+	//}
 });
-
 
 socket.on("timer", function(data){
-	theGrid = [];
-  theGrid = data.data;
-	drawGrid();
-	if (!started) {
-		tick();
-		started = true;
-	}
-	
-  //drawGrid();
+	// Update when loaded but do not draw
+  theGrid =  ((data.data));
+ 
 });
-// END SOCKET CONTROL
 
+ 
+
+setInterval(function() {  
+	//Draw only on timer
+  drawGrid();
+},1000);
+
+// END SOCKET CONTROL
 function drawGrid() {
-  ctx.clearRect(0, 0, 500, 500);
+
+  ctx.clearRect(0, 0, 600, 600);
+
   for (var j = 1; j < gridHeight; j++) {
-    for (var k = 1; k < gridWidth; k++) {
-      if (theGrid[j][k] === 1) {
-        //ctx.fillStyle = colorGrid[j][k];
-        ctx.fillStyle = "red";
-        ctx.fillRect(j, k, 1, 1);
+    for (var k = 1; k < gridWidth; k++) {	 
+      if (theGrid[j][k][0] == 1) {
+				ctx.fillStyle = theGrid[j][k][1];
+        ctx.fillRect(j*6, k*6, 6, 6);
       }
     }
   }
+
+	var theShape = (shapes[symbol]);
+	for (var row=0; row<theShape.length;row++) {
+		for (var column=0; column<theShape[row].length;column++) {
+			if (theShape[row][column]==1) {
+				ctx.fillStyle = color;
+				ctx.fillRect((hoverj+column)*6,(hoverk+row)*6,6,6); 
+			}
+		}
+}
+
+
 }

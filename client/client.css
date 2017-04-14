@@ -24,17 +24,18 @@ canvas {
 	padding:0px;
 }
  
-#info {
+.info {
+	margin:20px;
 	padding:20px;
 	background-color: #d3d3d3;
 }
 
 #terminal_inner {
-	height:400px;
+	height:80vh;
+	margin:20px;
 	font-family:courier;
 	color:#333;
 	text-align: left;
-	padding:10px;
 	overflow: scroll;
 }
 

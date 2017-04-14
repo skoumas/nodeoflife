@@ -6,7 +6,12 @@ var core = require('./server/core.js');
 
 //SOCKET ON CONNECT
 io.on('connect',function(socket) {
-
+  core.updateGrid();
+  console.log("user connected");
+  io.emit('timer', { 
+    data:core.theGrid
+    //color: core.colorGrid
+  });
 	socket.on('click',function(data) {
     core.add(data.x,data.y,data.symbol,data.color);
     io.emit('click', { 
@@ -16,15 +21,19 @@ io.on('connect',function(socket) {
       color:data.color,
       id:data.id
     });
+    // io.emit('timer', { 
+    //   data:core.theGrid
+    // });
   });
 
   socket.on('mouseMove',function(data) {
     data.points.forEach(function(point) {
       core.add(point[0],point[1],data.symbol,data.color);
     });
-    io.emit('timer', { 
-      data:core.theGrid
-    });
+    // io.emit('timer', { 
+    //   data:core.theGrid,
+    //   color: core.colorGrid
+    // });
   });
 
 	socket.on('random',function() {
@@ -38,14 +47,16 @@ io.on('connect',function(socket) {
 });
 
 setInterval(function() {  
+  core.updateGrid();
   io.emit('timer', { 
     data:core.theGrid
+   //color: core.colorGrid
   });
-}, 1000);
+},1000);
 
-setInterval(function() {  
-  core.updateGrid();
-}, 10);
+// setInterval(function() {  
+//   core.updateGrid();
+// }, 10);
 
 core.fillRandom();
 server.listen(3000);
