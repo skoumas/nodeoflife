@@ -1,8 +1,8 @@
 "use strict";
-var gridSize = 100;
+var gridSize = 50;
 var theGrid = [];
 var hoverk,hoverj;
-var multiplier = 7;
+var multiplier = 14;
 var symbol = "block";
 var color = getRandomColor();
 var id = Math.round(+new Date()/1000);
@@ -111,7 +111,7 @@ if (typeof(socket)!=="undefined") {
 	  wt("Connected with server");
 		setInterval(function() {  
 		  drawGrid();
-		},200);
+		},1000);
 	});
 
 	socket.on("disconnect", function(){
@@ -129,9 +129,6 @@ if (typeof(socket)!=="undefined") {
 }
  
 function drawGrid() {
-
-	
-
 
   if (typeof(socket)==="undefined") return;
   ctx.clearRect(0, 0, 100 * multiplier, 100 * multiplier);
@@ -153,19 +150,18 @@ function drawGrid() {
 			}
 		}
 	}
-for (var j = multiplier; j < gridSize * multiplier; j=j+multiplier) {
+
+	for (var j = multiplier; j < gridSize * multiplier; j=j+multiplier) {
 		ctx.beginPath();
-		ctx.strokeStyle = "#f3f3f3";
-		 
+		ctx.strokeStyle = "#f3f3f3"; 
 		ctx.moveTo(j,0);
 		ctx.lineTo(j,gridSize * multiplier);
 		ctx.stroke();
 	}
 
-for (var k = multiplier; k < gridSize * multiplier; k=k+multiplier) {
+	for (var k = multiplier; k < gridSize * multiplier; k=k+multiplier) {
 		ctx.beginPath();
 		ctx.strokeStyle = "#f3f3f3";
-		 
 		ctx.moveTo(0,k);
 		ctx.lineTo(gridSize * multiplier,k);
 		ctx.stroke();

@@ -1,4 +1,4 @@
-var gridSize = 100; 
+var gridSize = 50; 
 var shapes = require('./shapes.js');
 var theGrid = createArray(gridSize);
 var mixColors = require('mix-colors');
@@ -154,5 +154,4 @@ module.exports.theGrid = theGrid;
 module.exports.updateGrid = updateGrid;
 module.exports.add = add;
 module.exports.clear = clear;
-module.exports.createArray = createArray;
 module.exports.fillRandom = fillRandom;
