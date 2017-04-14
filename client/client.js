@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var gridSize = 50;
 var theGrid = [];
 var hoverk,hoverj;
@@ -8,6 +8,29 @@ var color = getRandomColor();
 var id = Math.round(+new Date()/1000);
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+
+if (typeof(socket)!=="undefined") {
+
+	socket.on("connect", function(){
+	  wt("Connected with server");
+		setInterval(function() {  
+		  drawGrid();
+		},1000);
+	});
+
+	socket.on("disconnect", function(){
+	  wt("Disconnected from server");
+	});
+
+	socket.on("click", function(data){
+		add(data.x,data.y,data.symbol,data.color);
+	});
+
+	socket.on("timer", function(data){
+	  theGrid = ((data.data));
+	});
+
+}
 
 if (typeof(io) == "undefined"){
   wt("Can't connect to server. Please start node server.js");
@@ -95,38 +118,12 @@ $(".symbol").click(function(){
   $(this).addClass("selected-symbol");
 })
 
-$("#random").click(function(){
-  //socket.emit("random");
-  //wt("Creating random canvas.");
-});
-
 $("#clear").click(function(){
   socket.emit("clear");
   wt("Clearing canvas.");
 });
  
-if (typeof(socket)!=="undefined") {
 
-	socket.on("connect", function(){
-	  wt("Connected with server");
-		setInterval(function() {  
-		  drawGrid();
-		},1000);
-	});
-
-	socket.on("disconnect", function(){
-	  wt("Disconnected from server");
-	});
-
-	socket.on("click", function(data){
-		add(data.x,data.y,data.symbol,data.color);
-	});
-
-	socket.on("timer", function(data){
-	  theGrid = ((data.data));
-	});
-
-}
  
 function drawGrid() {
 

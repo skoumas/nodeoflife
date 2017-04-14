@@ -2,16 +2,15 @@
 var app = require('express')();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var gol = require('./server/core.js');
+var gol = require('./server/core.js')({gridSize: 50});
 
 //SOCKET ON CONNECT
 io.on('connect',function(socket) {
-  
-  
+
   gol.updateGrid();
 
   io.emit('timer', { 
-    data:gol.theGrid
+    data:gol.getGrid()
   });
 
 	socket.on('click',function(data) {
@@ -34,7 +33,7 @@ io.on('connect',function(socket) {
 setInterval(function() {  
   gol.updateGrid();
   io.emit('timer', { 
-    data:gol.theGrid
+    data:gol.getGrid()
   });
 },1000);
 
