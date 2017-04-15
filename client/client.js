@@ -11,6 +11,7 @@ if (typeof(io) == "undefined"){
   var socket = io("http://localhost:3000");
 	$("#my_color").css("background-color",user.getColor());
 	$("#my_id").html(user.getId());
+	gol.setSocket(socket);
 	terminal.write("Welcome. Your color is: " + user.getColor());
 	terminal.write("Welcome. You are user: " + user.getId());
 }
@@ -18,7 +19,7 @@ if (typeof(io) == "undefined"){
 if (typeof(socket)!=="undefined"){
 
 	socket.on("connect", function(){
-	  terminal.write("Connected with server");
+    terminal.write("Connected with server");
 		setInterval(function() {  
 		  gol.drawGrid();
 		},1000);

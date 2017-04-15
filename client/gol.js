@@ -9,8 +9,8 @@ function Gol(object) {
   var ctx = c.getContext("2d");
   var hoverk;
   var hoverj;
-  var multiplier = 14;
-
+  var multiplier = 1
+  var socket;
   /**
     * Gets the exact X Y from the canvas pixels to the absolute pixel
     * @param {event} e
@@ -132,9 +132,10 @@ function Gol(object) {
   }
 
   return {
+    setSocket: function(newsocket) {socket = newsocket;},
     setGrid: function(newGrid) {theGrid = newGrid},
     getGrid: function() {return theGrid;},
     drawGrid: function() {return drawGrid();},
     add: function(x,y,symbol,color) { add(x,y,symbol,color);}
   }
-};
+}
