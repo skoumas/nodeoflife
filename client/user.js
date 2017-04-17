@@ -2,7 +2,7 @@
 /**
  * User is the class that defines a new user and his/her properties
 */
-function User() {
+var User = (function(){
   var symbol = "block";
   var color = getRandomColor();
   var id = Math.round(+new Date()/1000);
@@ -26,4 +26,4 @@ function User() {
     getId: function() {return id;},
     getColor: function() {return color;}
   }
-};
+}());

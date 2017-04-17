@@ -2,15 +2,19 @@
 /**
 * Gol is an abstract base class that displays the pixel grid
 */
-function Gol(object) {
+var Gol = function(object) {
   var gridSize = 50;
   var theGrid = [];
   var c = object[0];
   var ctx = c.getContext("2d");
   var hoverk;
   var hoverj;
-  var multiplier = 1
-  var socket;
+  var multiplier = 14;
+  var gridColor = "#f3f3f3";
+  var socket; //Inject the socket here
+  var user; //Inject the user here
+  var terminal; //Inject the terminal here
+
   /**
     * Gets the exact X Y from the canvas pixels to the absolute pixel
     * @param {event} e
@@ -31,34 +35,37 @@ function Gol(object) {
     }
     return [x,y];
   }
-
-  /**
-   * When the canvas is clicked
-   * @param {event} e
-   * @return null
-  */
-  object.click(function(e){
-    socket.emit("click",{
-      x:getXY(e)[0],
-      y:getXY(e)[1],
-      symbol:user.getSymbol(),
-      color:user.getColor(),
-      id:user.getId()
+  
+  function init() {
+    /**
+     * When the canvas is clicked
+     * @param {event} e
+     * @return null
+    */
+    object.click(function(e){
+      socket.emit("click",{
+        x:getXY(e)[0],
+        y:getXY(e)[1],
+        symbol:user.getSymbol(),
+        color:user.getColor(),
+        id:user.getId()
+      });
+      add(getXY(e)[0],getXY(e)[1],user.symbol,user.getColor());
+      terminal.write(user.getSymbol() + " placed at (" + getXY(e)[0] + ", " + getXY(e)[1] + ")");
     });
-    add(getXY(e)[0],getXY(e)[1],user.symbol,user.getColor());
-    terminal.write(user.getSymbol() + " placed at (" + getXY(e)[0] + ", " + getXY(e)[1] + ")");
-  });
 
-  /**
-    * when we move the mouse over the canvas
-    * @param {event} e
-    * @return null
-  */
-  object.mousemove(function(e){ 
-    hoverj = getXY(e)[0];
-    hoverk = getXY(e)[1];
-    drawGrid();
-  });
+    /**
+      * when we move the mouse over the canvas
+      * @param {event} e
+      * @return null
+    */
+    object.mousemove(function(e){ 
+      hoverj = getXY(e)[0];
+      hoverk = getXY(e)[1];
+      drawGrid();
+    });
+  }
+ 
 
   /**
    * Adds a new symbol to the canvas
@@ -115,7 +122,7 @@ function Gol(object) {
 
     for (var j = multiplier; j < gridSize * multiplier; j=j+multiplier) {
       ctx.beginPath();
-      ctx.strokeStyle = "#f3f3f3";
+      ctx.strokeStyle = gridColor;
       ctx.moveTo(j,0);
       ctx.lineTo(j,gridSize * multiplier);
       ctx.stroke();
@@ -123,7 +130,7 @@ function Gol(object) {
 
     for (var k = multiplier; k < gridSize * multiplier; k=k+multiplier) {
       ctx.beginPath();
-      ctx.strokeStyle = "#f3f3f3";
+      ctx.strokeStyle = gridColor;
       ctx.moveTo(0,k);
       ctx.lineTo(gridSize * multiplier,k);
       ctx.stroke();
@@ -132,10 +139,13 @@ function Gol(object) {
   }
 
   return {
-    setSocket: function(newsocket) {socket = newsocket;},
+    init: function() {init();},
+    setUser: function(newUser) {user = newUser;},
+    setSocket: function(newSocket) {socket = newSocket;},
+    setTerminal: function(newTerminal) {terminal = newTerminal;},
     setGrid: function(newGrid) {theGrid = newGrid},
     getGrid: function() {return theGrid;},
-    drawGrid: function() {return drawGrid();},
+    drawGrid: function() {drawGrid();},
     add: function(x,y,symbol,color) { add(x,y,symbol,color);}
   }
-}
+};
