@@ -23,6 +23,7 @@ $(function(){
         $("#my_id").html(model.user.getId());
         model.terminal.write("Welcome. Your color is: " + model.user.getColor());
         model.terminal.write("Welcome. You are user: " + model.user.getId());
+				view.init();
       }
 
       if (typeof(model.socket)!=="undefined"){
@@ -34,7 +35,7 @@ $(function(){
           model.gol.init();
           model.terminal.write("Connected with server");
           setInterval(function(){
-            model.gol.drawGrid();
+            view.refresh();
           },1000);
         });
 
@@ -67,10 +68,13 @@ $(function(){
         model.socket.emit("clear");
         model.terminal.write("Clearing canvas.");
       });
-    }
+    },
+
+		refresh: function() {
+			model.gol.drawGrid();
+		}
   }
 
   controller.init();
-  view.init();
 
 }());
