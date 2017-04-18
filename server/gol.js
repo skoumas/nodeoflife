@@ -44,6 +44,56 @@ function gol (options) {
   }
 
   /**
+   * Gets the number of active cells around one cell
+   * @param {integer} j the X position of the cell we want to track
+   * @param {integer} k the Y position of the cell we want to track
+   * @return integer The number of the active cells
+  */
+  function getTotalCells(j,k){
+    var totalCells = 0;
+    totalCells += theGrid[j - 1][k - 1][0];
+    totalCells += theGrid[j - 1][k][0];
+    totalCells += theGrid[j - 1][k + 1][0];
+    totalCells += theGrid[j][k - 1][0];
+    totalCells += theGrid[j][k + 1][0];
+    totalCells += theGrid[j + 1][k - 1][0];
+    totalCells += theGrid[j + 1][k][0];
+    totalCells += theGrid[j + 1][k + 1][0];
+    return totalCells;
+  }
+
+  
+  /**
+   * Sets a color based on the neighbour colors (only active cells)
+   * @param {integer} j the X position of the cell we want to change color
+   * @param {integer} k the Y position of the cell we want to change color
+   * @param {array} tempGrid We pass the grid of the cells in this function
+   * @return string The color in HEX 
+  */
+  function setAverageColor(j,k,tempGrid){
+    tcolorArray = [];
+    if (tempGrid[j+1][k+1][0]==1)
+    tcolorArray.push (tempGrid[j+1][k+1][1]);
+    if (tempGrid[j][k+1][0]==1)
+    tcolorArray.push (tempGrid[j][k+1][1]);
+    if (tempGrid[j+1][k][0]==1)
+    tcolorArray.push (tempGrid[j+1][k][1]);
+    if (tempGrid[j-1][k-1][0]==1)
+    tcolorArray.push (tempGrid[j-1][k-1][1]);
+    if (tempGrid[j][k-1][0]==1)
+    tcolorArray.push (tempGrid[j][k-1][1]);
+    if (tempGrid[j-1][k][0]==1)
+    tcolorArray.push (tempGrid[j-1][k][1]);
+    if (tempGrid[j][k][0]==1)
+    tcolorArray.push (tempGrid[j][k][1]);
+    if (tcolorArray.length>0) {
+      return mixColors(tcolorArray);
+    } else {
+      return tempGrid[j][k][1];
+    }
+  }
+
+  /**
    * The main loop function that applies the Game of Life logic.
    * @return null
   */
@@ -53,39 +103,13 @@ function gol (options) {
     for (var j = 1; j < gridSize - 1; j++){
       for (var k = 1; k < gridSize - 1; k++){
         tempGrid[j][k][1] = theGrid[j][k][1];
-        var totalCells = 0;
-        totalCells += theGrid[j - 1][k - 1][0];
-        totalCells += theGrid[j - 1][k][0];
-        totalCells += theGrid[j - 1][k + 1][0];
-        totalCells += theGrid[j][k - 1][0];
-        totalCells += theGrid[j][k + 1][0];
-        totalCells += theGrid[j + 1][k - 1][0];
-        totalCells += theGrid[j + 1][k][0];
-        totalCells += theGrid[j + 1][k + 1][0];
+        var totalCells = getTotalCells(j,k);
 
         if (theGrid[j][k][0] === 0) {
 
           switch (totalCells) {
             case 3:
-              tcolorArray = [];
-              if (tempGrid[j+1][k+1][0]==1)
-              tcolorArray.push (tempGrid[j+1][k+1][1]);
-              if (tempGrid[j][k+1][0]==1)
-              tcolorArray.push (tempGrid[j][k+1][1]);
-              if (tempGrid[j+1][k][0]==1)
-              tcolorArray.push (tempGrid[j+1][k][1]);
-              if (tempGrid[j-1][k-1][0]==1)
-              tcolorArray.push (tempGrid[j-1][k-1][1]);
-              if (tempGrid[j][k-1][0]==1)
-              tcolorArray.push (tempGrid[j][k-1][1]);
-              if (tempGrid[j-1][k][0]==1)
-              tcolorArray.push (tempGrid[j-1][k][1]);
-              if (tempGrid[j][k][0]==1)
-              tcolorArray.push (tempGrid[j][k][1]);
-              if (tcolorArray.length>0) {
-                tempGrid[j][k][1] = mixColors(tcolorArray);
-              }
-
+              tempGrid[j][k][1] = setAverageColor(j,k,tempGrid);
               tempGrid[j][k][0] = 1;
               break;
 

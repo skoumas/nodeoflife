@@ -16,7 +16,7 @@ $(function(){
     init: function() {
       // Check if server is online
       if (typeof(io) == "undefined"){
-        terminal.write("Can't connect to server. Please start node server.js");
+        model.terminal.write("Can't connect to server. Please start node server.js");
       } else {
         model.socket = io("http://" + model.url + ":3000");
         $("#my_color").css("background-color",model.user.getColor());
@@ -29,6 +29,7 @@ $(function(){
       if (typeof(model.socket)!=="undefined"){
 
         model.socket.on("connect", function(){
+					// We inject these objects into the gol instance
           model.gol.setSocket(model.socket);
           model.gol.setUser(model.user);
           model.gol.setTerminal(model.terminal);
