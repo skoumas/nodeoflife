@@ -62,7 +62,6 @@ function gol (options) {
     return totalCells;
   }
 
-  
   /**
    * Sets a color based on the neighbour colors (only active cells)
    * @param {integer} j the X position of the cell we want to change color
@@ -104,15 +103,12 @@ function gol (options) {
       for (var k = 1; k < gridSize - 1; k++){
         tempGrid[j][k][1] = theGrid[j][k][1];
         var totalCells = getTotalCells(j,k);
-
         if (theGrid[j][k][0] === 0) {
-
           switch (totalCells) {
             case 3:
               tempGrid[j][k][1] = setAverageColor(j,k,tempGrid);
               tempGrid[j][k][0] = 1;
               break;
-
             default:
               tempGrid[j][k][0] = 0;
           }
