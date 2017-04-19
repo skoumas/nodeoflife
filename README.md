@@ -7,14 +7,20 @@ http://labs.skoumas.com/nodeoflife/
 
 ## How to run
 1) Load terminal
-2) start the server
+2) Install all dependencies
+```js
+npm install
+```
+3) start the server
 ```js
 node server
 ```
-3) Open index.html with a browser
-4) Wait a couple of seconds and you should be able to see the grid
-5) Click any shape from the top bar
-6) Click in the grid to place it
+4) Open index.html with a browser
+5) Wait a couple of seconds and you should be able to see the grid
+6) Click any shape from the top bar
+7) Click in the grid to place it
+
+## How to run
 
 ## How it works
 First the server starts and creates an empty grid. That grid is loaded with zeros and a color 
