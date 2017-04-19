@@ -46,3 +46,10 @@ describe('Gol', function() {
 
 });
 
+
+describe('Client', function() {
+	it('should be able to add a point succesfully', function() {
+		var client = require('../client/client.js');
+	});
+
+});

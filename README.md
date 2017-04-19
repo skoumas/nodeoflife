@@ -27,24 +27,27 @@ getting from the socket.io. Everytime we receive a socket.io signal then the dra
 
 ### Structure
 #### Server
-
-	server.js
-	server/gol.js
-	server/shapes.js
-
+- We are using Singleton design pattern for the server/gol.js in which we create our gol class.
 #### Client
-
-	client/client.js
-	client/gol.js
-	client/terminal.js
-	client/user.js
+- We are using the contructor design pattern for our client/gol.js, terminal.js and user.js.
+- We are using the MV* pattern for client/client.js in which we have our model, controller and view.
 
 
 ### Technical Choices
-Nodejs and socketio for the backend and transmition. Jquery for playing with the DOM, Bootstrap CSS for the basic styling and mix-colors npm package for mixing the colors together. JSlint for beautifing the code and applying a lot of commenting as well.
+#### Server
+- Nodejs is great for setting real-time web applications pretty fast
+- Express framework for setting up the basic server and for future scalability
+- Socket.io to establish a quick socket communication with our browser
+- mixColors for mixing our colors
+- Mocha and Chai for testing
+#### Client
+- Native Javascript of course
+- Bootstrap for the CSS
+- HTML5 canvas to draw the grid
+- Jquery to quickly handle the DOM
 
 ### Future thoughts
-- I would like to make this run on 10ms. Possible if you do syncing between brownser and client. Both run the same code and the server sends a pulse every one second to make sure synchronization happens.
-- Thinking ways to make the whole thing faster including compressing the table in a way or limiting the
-amount of data sent. Perhaps also good idea to find a better way to send the colors.
-- Responsive design
+Even though basic functionality is there it would be great to improve the following areas in the future.
+- Add more shapes
+- Add color selector for user
+- Add chat between online members
