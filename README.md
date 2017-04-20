@@ -5,7 +5,7 @@ A nodejs socket.io web browser game
 NodeOfLife is a nodejs application that utiliases the Game of Life algorithm implemented in nodejs and broadcasted using socket.io
 http://labs.skoumas.com/nodeoflife/
 
-## How to run
+## To run locally
 1) Load terminal
 2) Install all dependencies
 ```js
@@ -15,10 +15,12 @@ npm install
 ```js
 node server
 ```
-4) Open index.html with a browser
-5) Wait a couple of seconds and you should be able to see the grid
-6) Click any shape from the top bar
-7) Click in the grid to place it
+4) At client/client.js Line 7, make sure that the url is localhost. If not change it.
+5) At Index.html make sure that that line 74 is not commented out and line 75 is. In other words all connections should lead to the localhost.
+6) Open index.html with a browser
+7) Wait a couple of seconds and you should be able to see the grid
+8) Click any shape from the top bar
+9) Click in the grid to place it
 
 ## How to run
 

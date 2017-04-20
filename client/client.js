@@ -1,6 +1,6 @@
 'use strict';
 // Main objects
-$(function(){
+(function(){
 
   // Here we store all the objects we need
   var model = {
@@ -14,6 +14,8 @@ $(function(){
   var controller = {
 
     init: function() {
+      // Set the connection to the local one
+      // model.url = "locahost";
       // Check if server is online
       if (typeof(io) == "undefined"){
         model.terminal.write("Can't connect to server. Please start node server.js");
