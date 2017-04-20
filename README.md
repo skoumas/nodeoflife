@@ -60,3 +60,5 @@ Even though basic functionality is there it would be great to improve the follow
 - Add more shapes
 - Add color selector for user
 - Add chat between online members
+- Front-end testing
+- More back end testing
